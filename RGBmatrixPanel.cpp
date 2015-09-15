@@ -47,7 +47,7 @@ BSD license, all text above must be included in any redistribution.
 // For similar reasons, the clock pin is only semi-configurable...it can
 // be specified as any pin within a specific PORT register stated below.
 
-#define pgm_read_byte(addr) (*(const uint8_t *)(addr))
+//#define pgm_read_byte(addr) (*(const uint8_t *)(addr))
 
 #if defined (STM32F10X_MD)	//Core
   #define pinSetFast(_pin)		PIN_MAP[_pin].gpio_peripheral->BSRR = PIN_MAP[_pin].gpio_pin
@@ -82,7 +82,7 @@ BSD license, all text above must be included in any redistribution.
   static const uint16_t	dur[4] = {30, 60, 120, 240};
 #endif
 
-#define TIMING
+//#define TIMING
 
 #if defined TIMING
 #define signalPIN	DAC	// Use pin A7 for oscilloscope or analyzer timing - DAC for Photon, A7 for Core
@@ -226,9 +226,12 @@ uint16_t RGBmatrixPanel::Color888(uint8_t r, uint8_t g, uint8_t b) {
 uint16_t RGBmatrixPanel::Color888(
   uint8_t r, uint8_t g, uint8_t b, boolean gflag) {
   if(gflag) { // Gamma-corrected color?
-    r = pgm_read_byte(&gamma[r]); // Gamma correction table maps
-    g = pgm_read_byte(&gamma[g]); // 8-bit input to 4-bit output
-    b = pgm_read_byte(&gamma[b]);
+//    r = pgm_read_byte(&gamma[r]); // Gamma correction table maps
+//    g = pgm_read_byte(&gamma[g]); // 8-bit input to 4-bit output
+//    b = pgm_read_byte(&gamma[b]);
+    r = gamma[r]; // Gamma correction table maps
+    g = gamma[g]; // 8-bit input to 4-bit output
+    b = gamma[b];
     return (r << 12) | ((r & 0x8) << 8) | // 4/4/4 -> 5/6/5
            (g <<  7) | ((g & 0xC) << 3) |
            (b <<  1) | ( b        >> 3);
@@ -267,9 +270,12 @@ uint16_t RGBmatrixPanel::ColorHSV(
   // to allow shifts, and upgrade to int makes other conversions implicit.
   v1 = val + 1;
   if(gflag) { // Gamma-corrected color?
-    r = pgm_read_byte(&gamma[(r * v1) >> 8]); // Gamma correction table maps
-    g = pgm_read_byte(&gamma[(g * v1) >> 8]); // 8-bit input to 4-bit output
-    b = pgm_read_byte(&gamma[(b * v1) >> 8]);
+//    r = pgm_read_byte(&gamma[(r * v1) >> 8]); // Gamma correction table maps
+//    g = pgm_read_byte(&gamma[(g * v1) >> 8]); // 8-bit input to 4-bit output
+//    b = pgm_read_byte(&gamma[(b * v1) >> 8]);
+    r = gamma[(r * v1) >> 8]; // Gamma correction table maps
+    g = gamma[(g * v1) >> 8]; // 8-bit input to 4-bit output
+    b = gamma[(b * v1) >> 8];
   } else { // linear (uncorrected) color
     r = (r * v1) >> 12; // 4-bit results
     g = (g * v1) >> 12;
