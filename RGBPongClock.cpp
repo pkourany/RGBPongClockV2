@@ -30,7 +30,6 @@
 #include "font3x5.h"
 #include "font5x5.h"
 #include "PietteTech_DHT.h"
-//#include "elapsedMillis.h"
 
 #define PROGMEM
 
