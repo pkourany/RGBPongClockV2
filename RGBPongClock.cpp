@@ -36,10 +36,8 @@
 #define WEATHER_CITY		"{\"mycity\": \"Chattanooga,TN\" }"
 
 // Arduino equivalence
-#define pgm_read_byte_near(_addr) (pgm_read_byte(_addr))
-#define pgm_read_byte_far(_addr)	(pgm_read_byte(_addr))
-#define pgm_read_word(_addr) (*(const uint16_t *)(_addr))
-#define pgm_read_word_near(_addr) (pgm_read_word(_addr))
+//#define pgm_read_byte_near(_addr) (pgm_read_byte(_addr))
+
 
 // allow us to use itoa() in this scope
 extern char* itoa(int a, char* buffer, unsigned char radix);
@@ -538,7 +536,8 @@ void drawChar(int x, int y, char c, uint8_t font_size, uint16_t color)  {
 		}
 		else{
 			for (uint8_t row=0; row< 5; row++) {
-				dots = pgm_read_byte_near(&font3x5[(uint8_t)c][row]);
+//				dots = pgm_read_byte_near(&font3x5[(uint8_t)c][row]);
+				dots = font3x5[(uint8_t)c][row];
 				for (uint8_t col=0; col < 3; col++) {
 					int x1=x;
 					int y1=y;
@@ -567,7 +566,8 @@ void drawChar(int x, int y, char c, uint8_t font_size, uint16_t color)  {
 		}
 		else{
 			for (uint8_t row=0; row< 5; row++) {
-				dots = pgm_read_byte_near(&font5x5[(uint8_t)c][row]);
+//				dots = pgm_read_byte_near(&font5x5[(uint8_t)c][row]);
+				dots = font5x5[(uint8_t)c][row];
 				for (uint8_t col=0; col < 5; col++) {
 					int x1=x;
 					int y1=y;
