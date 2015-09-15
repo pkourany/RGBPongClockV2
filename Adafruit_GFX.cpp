@@ -33,7 +33,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "Adafruit_GFX.h"
 
-#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
+//#define pgm_read_byte(addr) (*(const unsigned char *)(addr))
 
 
 static const unsigned char font[] = {
@@ -611,7 +611,8 @@ void Adafruit_GFX::drawBitmap(int16_t x, int16_t y,
 
   for(j=0; j<h; j++) {
     for(i=0; i<w; i++ ) {
-      if(pgm_read_byte(bitmap + j * byteWidth + i / 8) & (128 >> (i & 7))) {
+//      if(pgm_read_byte(bitmap + j * byteWidth + i / 8) & (128 >> (i & 7))) {
+      if(bitmap[j * byteWidth + i / 8] & (128 >> (i & 7))) {
 	drawPixel(x+i, y+j, color);
       }
     }
@@ -651,7 +652,8 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c,
     if (i == 5) 
       line = 0x0;
     else 
-      line = pgm_read_byte(font+(c*5)+i);
+//      line = pgm_read_byte(font+(c*5)+i);
+      line = font[(c*5)+i];
     for (int8_t j = 0; j<8; j++) {
       if (line & 0x1) {
         if (size == 1) // default size
