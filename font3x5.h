@@ -1,9 +1,8 @@
 // Kunal Doshi
 // www.kunaldoshi.com
 #include "application.h"
-#define PROGMEM
 
-const unsigned char PROGMEM font3x5[38][5] = { 
+const unsigned char font3x5[38][5] = { 
 {0,0,0,0,0},		
 {0x7,0x5,0x7,0x5,0x5},  //A
 {0x7,0x5,0x7,0x5,0x7},
