@@ -29,7 +29,6 @@
 #include "RGBmatrixPanel.h" // Hardware-specific library
 #include "font3x5.h"
 #include "font5x5.h"
-#include "PietteTech_DHT.h"
 
 #define PROGMEM
 
