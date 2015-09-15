@@ -4,10 +4,10 @@
 #include "application.h"
 #include <math.h>
 
-#define pgm_read_byte_near(_addr) (pgm_read_byte(_addr))
-#define pgm_read_byte_far(_addr)	(pgm_read_byte(_addr))
-#define pgm_read_word(_addr) (*(const uint16_t *)(_addr))
-#define pgm_read_word_near(_addr) (pgm_read_word(_addr))
+//#define pgm_read_byte_near(_addr) (pgm_read_byte(_addr))
+//#define pgm_read_byte_far(_addr)	(pgm_read_byte(_addr))
+//#define pgm_read_word(_addr) (*(const uint16_t *)(_addr))
+//#define pgm_read_word_near(_addr) (pgm_read_word(_addr))
 
 
 /*
