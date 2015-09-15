@@ -1,8 +1,7 @@
 #ifdef FACE_NORMAL
 
-void normal_clock()
-{
-	// DEBUGpln("in normal_clock");
+
+void normal_clock() {
 	matrix.setTextWrap(false); // Allow text to run off right edge
 	matrix.setTextSize(2);
 	matrix.setTextColor(matrix.Color333(2, 3, 2));

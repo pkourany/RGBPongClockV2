@@ -124,7 +124,7 @@ bool has_shown = 0;
 #define DHT_TYPE DHT22
 
 #ifdef SENSOR_DHT
-	#include "dht.cpp"
+	// #include "dht.cpp"
 #endif
 
 
@@ -156,41 +156,41 @@ void update_last();
 #define TOTAL_FACE_COUNT	0
 
 #ifdef FACE_WEATHER
-	#include "weather.1.cpp"
+	#include "face_weather.1.cpp"
 #endif
 
 #ifdef FACE_PACMAN
-	#include "pacman.cpp"
+	#include "face_pacman.cpp"
 #endif
 
 #ifdef FACE_WORDCLOCK
-	#include "wordclock.cpp"
+	#include "face_wordclock.cpp"
 #endif
 
 #ifdef FACE_MARQUEE
-	#include "marquee.cpp"
+	#include "face_marquee.cpp"
 #endif
 
 #ifdef FACE_PONG
-	#include "pong.cpp"
+	#include "face_pong.cpp"
 #endif
 
 #ifdef FACE_PLASMA
 	#define FACE_FFT
-	#include "plasma.cpp"
+	#include "face_plasma.cpp"
 #endif
 
 #ifdef FACE_FFT
 	#include "fix_fft.h"
-	#include "fft.cpp"
+	#include "face_fft.cpp"
 #endif
 
 #ifdef FACE_JUMBLE
-	#include "jumble.cpp"
+	#include "face_jumble.cpp"
 #endif
 
 #ifdef FACE_NORMAL
-	#include "normal.cpp"
+	#include "face_normal.cpp"
 #endif
 
 
