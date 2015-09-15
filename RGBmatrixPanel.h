@@ -1,6 +1,6 @@
 
 #include "Adafruit_GFX.h"
-#define pgm_read_byte(addr) (*(const uint8_t *)(addr))
+//#define pgm_read_byte(addr) (*(const uint8_t *)(addr))
 #define PROGMEM
 
 class RGBmatrixPanel : public Adafruit_GFX {
