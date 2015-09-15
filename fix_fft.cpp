@@ -175,8 +175,10 @@ int16_t fix_fft(int8_t fr[], int8_t fi[], int16_t m, int16_t inverse)
        for (m=0; m<l; ++m) {
            j = m << k;
            /* 0 <= j < N_WAVE/2 */
-           wr =  pgm_read_word_near(Sinewave + j+N_WAVE/4);
-           wi = -pgm_read_word_near(Sinewave + j);
+//           wr =  pgm_read_word_near(Sinewave + j+N_WAVE/4);
+//           wi = -pgm_read_word_near(Sinewave + j);
+           wr =  Sinewave[j+N_WAVE/4];
+           wi = -Sinewave[j];
            if (inverse)
                wi = -wi;
            if (shift) {
