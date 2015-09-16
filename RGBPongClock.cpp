@@ -21,21 +21,12 @@
 
 #define	RGBPCversion	"V1.03g"
 
-// LDR   -> "A5"  => A7
-// DHT22 -> "WKP" => A6
-// Mic   -> "DAC" => A5
-
 #include "Adafruit_GFX.h"   // Core graphics library
 #include "RGBmatrixPanel.h" // Hardware-specific library
 #include "font3x5.h"
 #include "font5x5.h"
 
-#define PROGMEM
-
 #define WEATHER_CITY		"{\"mycity\": \"Chattanooga,TN\" }"
-
-// Arduino equivalence
-//#define pgm_read_byte_near(_addr) (pgm_read_byte(_addr))
 
 
 // allow us to use itoa() in this scope
@@ -90,7 +81,7 @@ extern char* itoa(int a, char* buffer, unsigned char radix);
 #define White           0xFFFF
 #define Orange          0xFD20
 #define GreenYellow     0xAFE5
-#define Pink		0xF81F
+#define Pink			0xF81F
 /**********************************************/
 
 
@@ -114,14 +105,6 @@ uint8_t minute_last = 0;
 uint8_t second_last = 0;
 bool has_shown = 0;
 
-// #define SENSOR_DHT
-
-#define DHT_PIN A6
-#define DHT_TYPE DHT22
-
-#ifdef SENSOR_DHT
-	// #include "dht.cpp"
-#endif
 
 
 /************ PROTOTYPES **************/
@@ -191,9 +174,6 @@ void update_last();
 
 
 void bgProcess() {
-#ifdef SENSOR_DHT
-	doDHT22();
-#endif
 	Particle.process();
 }
 
@@ -233,13 +213,6 @@ void setup() {
 
 	//Particle.variable("cmode", &clock_mode, INT);
 
-	// Particle.variable("ldr", &ldr, INT);
-	// Particle.variable("Fahrenheit", &dhtFahrenheit, DOUBLE);
-	// Particle.variable("Humidity", &dhtHumidity, DOUBLE);
-	// Particle.variable("DewPoint", &dhtDewPoint, DOUBLE);
-	// Particle.variable("dhtError", &dhtError, STRING);
-	// Particle.variable("dhtTS", &dhtTimestamp, INT);
-
 
 #ifdef FACE_MARQUEE
 	// Allow a user to call a function and post their own marquee message
@@ -273,9 +246,6 @@ void setup() {
 	}
 #endif
 
-#ifdef SENSOR_DHT
-	//timerDHT22 = 0;
-#endif
 
 #ifdef FACE_PACMAN
 	pacMan();
@@ -284,10 +254,6 @@ void setup() {
 	clock_mode = random(0, MAX_CLOCK_MODE-1);
 	modeSwitch = millis();
 	updateCTime = millis();		// Reset 24hr cloud time refresh counter
-
-#ifdef SENSOR_DHT
-	dhtMillis = millis()+2000;
-#endif
 
 	update_last();
 	cls();
