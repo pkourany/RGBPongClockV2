@@ -188,11 +188,21 @@ void bgProcess() {
 SYSTEM_MODE(SEMI_AUTOMATIC);
 
 
+void ledChangeHandler(uint8_t r, uint8_t g, uint8_t b) {
+	if(!Particle.connected()) {
+		matrix.drawPixel(0, 0, matrix.Color444(r, g, b));
+		matrix.swapBuffers(true);
+	}
+}
+
+
 void setup() {
 	matrix.begin();
 	matrix.setTextWrap(false); // Allow text to run off right edge
 	matrix.setTextSize(1);
 	matrix.setTextColor(matrix.Color333(210, 210, 210));
+
+	RGB.onChange(ledChangeHandler);
 
 	// Connect to the cloud
 	Particle.connect();
