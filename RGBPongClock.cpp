@@ -175,19 +175,17 @@ void update_last();
 
 void bgProcess() {
 	Particle.process();
+
+	// Try reconnecting to the cloud
+	if(!Particle.connected()) {
+		Particle.connect();
+		delay(1);
+		Particle.process();
+	}
 }
 
 
-//SYSTEM_MODE(SEMI_AUTOMATIC);
-
-// void ledChangeHandler(uint8_t r, uint8_t g, uint8_t b) {
-// 	if(!Particle.connected()) {
-// 		matrix.drawPixel(0, 0, matrix.Color333(r, g, b));
-// 		matrix.swapBuffers(true);
-// 		delay(1);
-// 		Particle.process();
-// 	}
-// }
+SYSTEM_MODE(SEMI_AUTOMATIC);
 
 
 void setup() {
@@ -196,14 +194,12 @@ void setup() {
 	matrix.setTextSize(1);
 	matrix.setTextColor(matrix.Color333(210, 210, 210));
 
-	//RGB.onChange(ledChangeHandler);
-
-	//Particle.connect();
-
-	// while(!Particle.connected()) {
-	// 	Particle.process();
-	// 	delay(1);
-	// }
+	// Connect to the cloud
+	Particle.connect();
+	while(!Particle.connected()) {
+	 	Particle.process();
+	 	delay(1);
+	}
 
 	// May need to move to loop() if can't connect
 	Particle.publish("RGBPongClock", RGBPCversion, 60, PRIVATE);
