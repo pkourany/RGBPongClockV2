@@ -173,6 +173,8 @@ void update_last();
 #endif
 
 
+// A sort of catch-all "background" process that can be called outside of loop()
+// if needed
 void bgProcess() {
 	Particle.process();
 
@@ -185,24 +187,51 @@ void bgProcess() {
 }
 
 
+// Semi-automatic mode to allow the clock to start running immediately
 SYSTEM_MODE(SEMI_AUTOMATIC);
 
+// Keep track of OTA update status
+bool is_ota_updating = false;
 
+
+// Make pixel 0,0 reflect the onboard RGB LED state when not connected to the
+// cloud or an OTA update is occurring
 void ledChangeHandler(uint8_t r, uint8_t g, uint8_t b) {
-	if(!Particle.connected()) {
+	bool do_it = false;
+
+	if(!Particle.connected())
+		do_it = true;
+
+	if(is_ota_updating)
+		do_it = true;
+
+	if(do_it) {
 		matrix.drawPixel(0, 0, matrix.Color444(r, g, b));
 		matrix.swapBuffers(true);
 	}
+
+	is_ota_updating = false;
+}
+
+
+// Called when an OTA flash is running
+void system_ota_handler(system_event_t events, uint32_t param, void* pointer) {
+    is_ota_updating = true;
 }
 
 
 void setup() {
+	// Initialize the panel
 	matrix.begin();
 	matrix.setTextWrap(false); // Allow text to run off right edge
 	matrix.setTextSize(1);
 	matrix.setTextColor(matrix.Color333(210, 210, 210));
 
+	// Bind to onboard RGB change
 	RGB.onChange(ledChangeHandler);
+
+	// Listen for OTA updates to blink magenta on the panel
+	System.on(firmware_update, system_ota_handler);
 
 	// Connect to the cloud
 	Particle.connect();
