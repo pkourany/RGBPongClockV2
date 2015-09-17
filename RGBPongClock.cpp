@@ -126,9 +126,9 @@ void update_last();
 // #define FACE_FFT			+
 // #define FACE_WORDCLOCK	+
 // #define FACE_MARQUEE		+
-#define FACE_PONG
+// #define FACE_PONG		+
 // #define FACE_PLASMA		+
-// #define FACE_JUMBLE		-
+#define FACE_JUMBLE
 // #define FACE_NORMAL		+
 // #define FACE_DATE		+
 
@@ -372,7 +372,8 @@ void loop() {
 	// weather();
 	// normal_clock();
 	// word_clock();
-	pong();
+	// pong();
+	jumble();
 
 	//if the mode hasn't changed, show the date
 #ifdef FACE_PACMAN
