@@ -176,14 +176,11 @@ void update_last();
 // A sort of catch-all "background" process that can be called outside of loop()
 // if needed
 void bgProcess() {
-	Particle.process();
-
 	// Try reconnecting to the cloud
-	if(!Particle.connected()) {
+	if(!Particle.connected())
 		Particle.connect();
-		delay(1);
-		Particle.process();
-	}
+
+	Particle.process();
 }
 
 
