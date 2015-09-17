@@ -123,13 +123,13 @@ void update_last();
 // + means it works, - means it doesn't work ... yet!
 // #define FACE_WEATHER
 // #define FACE_PACMAN		+
-// #define FACE_FFT		+
-// #define FACE_WORDCLOCK
-// #define FACE_MARQUEE		//+
-// #define FACE_PONG		-
+// #define FACE_FFT			+
+// #define FACE_WORDCLOCK	+
+// #define FACE_MARQUEE		+
+#define FACE_PONG
 // #define FACE_PLASMA		+
 // #define FACE_JUMBLE		-
-#define FACE_NORMAL		//+
+// #define FACE_NORMAL		+
 // #define FACE_DATE		+
 
 #define TOTAL_FACE_COUNT	0
@@ -283,6 +283,11 @@ void setup() {
 	pacMan();
 #endif
 
+
+#ifdef FACE_NORMAL
+	// NC.setup();
+#endif
+
 	clock_mode = random(0, MAX_CLOCK_MODE-1);
 	modeSwitch = millis();
 	updateCTime = millis();		// Reset 24hr cloud time refresh counter
@@ -365,7 +370,9 @@ void loop() {
 // 	}
 
 	// weather();
-	normal_clock();
+	// normal_clock();
+	// word_clock();
+	pong();
 
 	//if the mode hasn't changed, show the date
 #ifdef FACE_PACMAN
