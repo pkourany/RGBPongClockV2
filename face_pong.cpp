@@ -21,8 +21,6 @@ void pong() {
 	matrix.setTextSize(1);
 	matrix.setTextColor(matrix.Color333(2, 2, 2));
 
-	int showTime = Time.now();
-
 	cls();
 	//draw pitch centre line
 	int adjust = 0;
@@ -31,19 +29,6 @@ void pong() {
 		if ( i % 2 == 0 ) { //plot point if an even number
 			matrix.drawPixel(16,i+adjust,matrix.Color333(0,4,0));
 		}
-	}
-
-	//main pong game loop
-	if (mode_changed == 1)
-	return;
-	if(mode_quick){
-		mode_quick = false;
-		display_date();
-#ifdef FACE_WEATHER
-		quickWeather();
-#endif
-		pong();
-		return;
 	}
 
 	int ampm=0;
