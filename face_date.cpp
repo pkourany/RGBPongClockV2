@@ -1,8 +1,6 @@
 #ifdef FACE_DATE
 
-void display_date()
-{
-	DEBUGpln("in display_date");
+void display_date() {
 	uint16_t color = matrix.Color333(0,1,0);
 	cls();
 	matrix.swapBuffers(true);
@@ -13,10 +11,8 @@ void display_date()
 	byte mont = Time.month()-1;
 
 	//array of day and month names to print on the display. Some are shortened as we only have 8 characters across to play with
-	char daynames[7][9]={
-		"Sunday", "Monday","Tuesday", "Wed", "Thursday", "Friday", "Saturday"                  };
-	char monthnames[12][9]={
-		"January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October", "November", "December"                  };
+	char daynames[7][9]={"Sunday", "Monday","Tuesday", "Wed", "Thursday", "Friday", "Saturday"};
+	char monthnames[12][9]={"January", "February", "March", "April", "May", "June", "July", "August", "Sept", "October", "November", "December"};
 
 	//call the flashing cursor effect for one blink at x,y pos 0,0, height 5, width 7, repeats 1
 	flashing_cursor(0,0,3,5,1);
@@ -29,9 +25,6 @@ void display_date()
 		drawChar(i*4,0,daynames[dow][i],51,color);
 		matrix.swapBuffers(true);
 		i++;
-
-		if (mode_changed == 1)
-		return;
 	}
 
 	//pause at the end of the line with a flashing cursor if there is space to print it.
@@ -52,9 +45,9 @@ void display_date()
 	itoa(date,buffer,10);
 
 	//then work out date 2 letter suffix - eg st, nd, rd, th etc
-	char suffix[4][3]={
-		"st", "nd", "rd", "th"                    };
+	char suffix[4][3]={"st", "nd", "rd", "th"};
 	byte s = 3;
+	
 	if(date == 1 || date == 21 || date == 31) {
 		s = 0;
 	}
