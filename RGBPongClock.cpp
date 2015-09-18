@@ -135,7 +135,7 @@ void update_last();
 #define TOTAL_FACE_COUNT	0
 
 #ifdef FACE_WEATHER
-	#include "face_weather.1.cpp"
+	#include "face_weather.cpp"
 #endif
 
 #ifdef FACE_PACMAN
