@@ -5,29 +5,13 @@ byte mins = Time.minute()-1;
 //show time and date and use a random jumble of letters transition each time the time changes.
 void jumble() {
 
-	char days[7][4] = {
-		"SUN","MON","TUE", "WED", "THU", "FRI", "SAT"                  }; //DS1307 outputs 1-7
-	char allchars[37] = {
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"                  };
+	char days[7][4] = {"SUN","MON","TUE", "WED", "THU", "FRI", "SAT"}; //DS1307 outputs 1-7
+	char allchars[37] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"};
 	char endchar[16];
 	byte counter[16];
 	byte seq[16];
 
 	cls();
-
-	if (mode_changed == 1)
-		return;
-
-	if(mode_quick){
-		mode_quick = false;
-		display_date();
-
-#ifdef FACE_WEATHER
-		quickWeather();
-#endif
-		jumble();
-		return;
-	}
 
 	// if ( show == 0 || mins != Time.minute()  ) {
 	// TODO: I think "show" was used to determine if this is the first time jumble()
