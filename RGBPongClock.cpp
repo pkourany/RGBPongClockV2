@@ -121,14 +121,14 @@ void update_last();
 /*************************************/
 
 // + means it works, - means it doesn't work ... yet!
-// #define FACE_WEATHER
+#define FACE_WEATHER
 // #define FACE_PACMAN		+
 // #define FACE_FFT			+
 // #define FACE_WORDCLOCK	+
 // #define FACE_MARQUEE		+
 // #define FACE_PONG		+
 // #define FACE_PLASMA		+
-#define FACE_JUMBLE
+// #define FACE_JUMBLE
 // #define FACE_NORMAL		+
 // #define FACE_DATE		+
 
@@ -369,11 +369,11 @@ void loop() {
 // 		break;
 // 	}
 
-	// weather();
+	weather();
 	// normal_clock();
 	// word_clock();
 	// pong();
-	jumble();
+	// jumble();
 
 	//if the mode hasn't changed, show the date
 #ifdef FACE_PACMAN
