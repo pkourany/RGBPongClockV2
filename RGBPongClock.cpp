@@ -25,6 +25,7 @@
 #include "RGBmatrixPanel.h" // Hardware-specific library
 #include "font3x5.h"
 #include "font5x5.h"
+#include "face_class.h"
 
 #define WEATHER_CITY		"{\"mycity\": \"Chattanooga,TN\" }"
 
@@ -105,7 +106,10 @@ uint8_t minute_last = 0;
 uint8_t second_last = 0;
 bool has_shown = 0;
 
-
+#define MAX_FACES		16
+#define MAX_INTERLUDES	8
+FaceClass * faces[MAX_FACES];
+FaceClass * interludes[MAX_INTERLUDES];
 
 /************ PROTOTYPES **************/
 int setMode(String command);
@@ -119,10 +123,11 @@ void bgProcess();
 void update_last();
 /*************************************/
 
-#include "face_normal.h"
 
-// #define FACE_WEATHER
-// #define FACE_PACMAN
+// #define INTERLUDE_WEATHER
+// #define INTERLUDE_PACMAN
+// #define INTERLUDE_DATE
+
 // #define FACE_FFT
 // #define FACE_WORDCLOCK
 // #define FACE_MARQUEE
@@ -130,14 +135,20 @@ void update_last();
 // #define FACE_PLASMA
 // #define FACE_JUMBLE
 #define FACE_NORMAL
-// #define FACE_DATE
 
-#ifdef FACE_WEATHER
-	#include "face_weather.cpp"
+#include "interlude_weather.cpp"
+
+#ifdef FACE_NORMAL
+	#include "face_normal.h"
+	face_normal FaceNormal();
 #endif
 
 #ifdef FACE_PACMAN
-	#include "face_pacman.cpp"
+	#include "interlude_pacman.cpp"
+#endif
+
+#ifdef FACE_DATE
+	#include "interlude_date.cpp"
 #endif
 
 #ifdef FACE_WORDCLOCK
@@ -166,13 +177,7 @@ void update_last();
 	#include "face_jumble.cpp"
 #endif
 
-#ifdef FACE_NORMAL
-	#include "face_normal.cpp"
-#endif
 
-#ifdef FACE_DATE
-	#include "face_date.cpp"
-#endif
 
 
 // A sort of catch-all "background" process that can be called outside of loop()
@@ -220,6 +225,50 @@ void system_ota_handler(system_event_t events, uint32_t param, void* pointer) {
 
 
 void setup() {
+
+int i;
+
+for (i=0; i < MAX_FACES; i++)
+	faces[i] = NULL;
+
+for (i=0; i < MAX_INTERLUDES; i++)
+	interludes[i] = NULL;
+
+#ifdef FACE_NORMAL
+//	faces[0] = new face_normal();
+	faces[0] = &FaceNormal;
+#endif
+
+#ifdef FACE_PONG
+	faces[1] = new face_pong();
+#endif
+#ifdef FACE_WORDCLOCK
+	faces[2] = new face_wordclock();
+#endif
+#ifdef FACE_JUMBLE
+	faces[3] = new face_jumble();
+#endif
+#ifdef FACE_FFT
+	faces[4] = new face_fft();
+#endif
+#ifdef FACE_PLASMA
+	faces[5] = new face_plasma();
+#endif
+#ifdef FACE_MARQUEE
+	faces[6] = new face_marquee();
+#endif
+
+#ifdef INTERLUDE_WEATHER
+	interludes[0] = new interlude_weather();
+#endif
+#ifdef INTERLUDE_PACMAN
+	interludes[0] = new interlude_pacman();
+#endif
+#ifdef INTERLUDE_DATE
+	interludes[1] = new interlude_date();
+#endif
+
+
 	// Initialize the panel
 	matrix.begin();
 	matrix.setTextWrap(false); // Allow text to run off right edge
@@ -277,12 +326,16 @@ void setup() {
 #endif
 
 
+
 #ifdef FACE_PACMAN
 	pacMan();
 #endif
 
 	// clock_mode = random(0, MAX_CLOCK_MODE-1);
-	clock_mode = 7;
+	// Default startup clock is face_normal so init that face
+	clock_mode = 0;
+	faces[clock_mode]->begin();
+
 	modeSwitch = millis();
 	updateCTime = millis();		// Reset 24hr cloud time refresh counter
 
@@ -298,23 +351,54 @@ void loop() {
 		updateCTime = millis();
 	}
 
-
 	// Make it check for mode_changed==0, otherwise it may change the mode to a different one
 	// in case the user "manually" triggered a mode change.
 	// if (mode_changed==0 && millis() - modeSwitch > 300000UL) {	//Switch modes every 5 mins
 	if (millis() - modeSwitch > 10000UL) {	//Switch modes every 5 mins
+		mode_changed = 1;
 		clock_mode++;
 		modeSwitch = millis();
 		if (clock_mode > MAX_CLOCK_MODE-1)
 			clock_mode = 0;
 	}
 
+/*
+	if(mode_quick){
+		mode_quick = false;
+		// activate interludes
+		display_date();
+		quickWeather();
+		return;
+	}
+*/
 
+	if (mode_changed == 1) {
+		if (faces[clock_mode] == NULL) {
+			clock_mode++;	// go to next clock an try again
+			return;
+		}
+		else {
+			mode_changed = 0;
+			faces[clock_mode]->begin(); //init clock face only once
+		}
+	}
+
+	// display the active clock face if not complete or endless loop
+	if (faces[clock_mode]->isComplete() == 0 || faces[clock_mode]->isComplete() == -1)
+		faces[clock_mode]->run();
+//	else
+
+	// Timer for interlude
+	// If face display isComplete AND time is up, display the interludes
+	// do something is faces[clock_mode].isComplete()
+
+/*	
+	
 	switch (clock_mode) {
 #ifdef FACE_NORMAL
 	case 0:
 		// normal_clock();
-		NC.loop();
+		faceNormal.();
 		break;
 #endif
 #ifdef FACE_PONG
@@ -360,7 +444,7 @@ void loop() {
 	default:
 		clock_mode++;
 	}
-
+*/
 
 	//if the mode hasn't changed, show the date
 // #ifdef FACE_PACMAN
