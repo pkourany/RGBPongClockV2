@@ -1,58 +1,63 @@
 #ifdef FACE_NORMAL
 
+#include "face_normal.h"
 
-void normal_clock() {
+
+void face_normal::face_normal()
+{
+	hours = 0;
+	mins = 0;
+}
+
+void face_normal::begin() {
 	matrix.setTextWrap(false); // Allow text to run off right edge
 	matrix.setTextSize(2);
 	matrix.setTextColor(matrix.Color333(2, 3, 2));
 
 	cls();
-	byte hours = Time.hour();
-	byte mins = Time.minute();
+	
+	hours = Time.hour();
+	mins = Time.minute();
 
-	int  msHourPosition = 0;
-	int  lsHourPosition = 0;
-	int  msMinPosition = 0;
-	int  lsMinPosition = 0;
-	int  msLastHourPosition = 0;
-	int  lsLastHourPosition = 0;
-	int  msLastMinPosition = 0;
-	int  lsLastMinPosition = 0;
+	msHourPosition = 0;
+	lsHourPosition = 0;
+	msMinPosition = 0;
+	lsMinPosition = 0;
+	msLastHourPosition = 0;
+	lsLastHourPosition = 0;
+	msLastMinPosition = 0;
+	lsLastMinPosition = 0;
 
 	//Start with all characters off screen
-	int c1 = -17;
-	int c2 = -17;
-	int c3 = -17;
-	int c4 = -17;
+	c1 = -17;
+	c2 = -17;
+	c3 = -17;
+	c4 = -17;
 
-	float scale_x =2.5;
-	float scale_y =3.0;
+	scale_x =2.5;
+	scale_y =3.0;
 
+	strcpy(lastHourBuffer, "  ");
+	strcpy(lastMinBuffer, "  ");
 
-	char lastHourBuffer[3]="  ";
-	char lastMinBuffer[3] ="  ";
+	//showTime = Time.now();
+}
 
-	//loop to display the clock for a set duration of SHOWCLOCK
-	//for (int show = 0; show < SHOWCLOCK ; show++) {
-	int showTime = Time.now();
+void face_normal::run() {
 
-	while((Time.now() - showTime) < showClock) {
 		cls();
 
+/* Move to loop()
 		if (mode_changed == 1)
-		return;
+			return;
 		if(mode_quick){
 			mode_quick = false;
-#ifdef FACE_DATE
 			display_date();
-#endif
-
-#ifdef FACE_WEATHER
 			quickWeather();
-#endif
 			normal_clock();
 			return;
 		}
+*/
 
 		//udate mins and hours with the new time
 		mins = Time.minute();
@@ -128,7 +133,11 @@ void normal_clock() {
 		if(c4==0) lastMinBuffer[1]=buffer[1];
 
 		matrix.swapBuffers(false);
-		bgProcess();	//Give the background process some lovin'
-	}
+		
+		//bgProcess();	//Give the background process some lovin'
+}
+
+int face_normal::isComplete() {
+	return -1;		// normal face never "completes"
 }
 #endif
